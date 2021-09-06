@@ -1,23 +1,26 @@
-import logo from './logo.svg';
 import './App.css';
-import '../SearchBar/SearchBar';
-import '../SearchResults/SearchResults';
-import '../Playlist/Playlist';
+import SearchBar from '../SearchBar/SearchBar';
 import SearchResults from '../SearchResults/SearchResults';
 import PlayList from '../Playlist/Playlist';
+import {useState} from 'react';
 
 
-function App() {
+function App(props) {
   
-  
+  const [searchResults, setResults] = useState([
+    { name: 'Tiny Dancer', artist: 'Elton John', album: 'Madman Across The Water', id: 1},
+    { name: 'Tiny Dancer', artist: 'Tim McGraw', album: 'Love Story', id: 2},
+    { name: 'Tiny Dancer', artist: 'Rockabye Baby!', album: 'Lullaby Renditions of Elton John', id: 3}
+  ]);
+
   return (
     <div>
-      <h1><span className="highlight">Jamming</span></h1>
+      <h1>Ja<span className="highlight">mmm</span>ing</h1>
       <div className="App">
-        <!-- <SearchBar /> -->
+        <SearchBar />
         <div className="App-playlist">
-          <!-- <SearchResults /> -->
-          <!-- <PlayList /> -->
+          <SearchResults searchResults={searchResults} />
+          <PlayList />
         </div>
       </div>
     </div>

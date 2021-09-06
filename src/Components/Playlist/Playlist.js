@@ -1,11 +1,11 @@
 import './Playlist.css'
-import '../TrackList/TrackList'
+import TrackList from '../TrackList/TrackList';
 
 function PlayList() {
     return (
         <div className="Playlist">
-            <input defaultValue="{'New Playlist'}" />
-            <!-- <TrackList /> -->
+            <input defaultValue={'New Playlist'} />
+            {/* <TrackList /> */}
             <button className="Playlist-save">SAVE TO SPOTIFY</button>
         </div>
     );

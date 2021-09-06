@@ -1,11 +1,11 @@
 import './Track.css';
 
-function Track() {
+function Track(props) {
 
     const renderAction = () => {
-      let buttonSign = '+';
-      if(this.props.isRemoval) {
-        buttonSign = '-';
+      let buttonSign = <button className="track-action">+</button>
+      if(props.isRemoval) {
+        buttonSign = <button className="track-action">-</button>;
       }
 
       return buttonSign;
@@ -13,8 +13,8 @@ function Track() {
     return (
         <div className="Track">
           <div className="Track-information">
-            <h3><!-- track name will go here --></h3>
-            <p><!-- track artist will go here--> | <!-- track album will go here --></p>
+            <h3>{props.track.name}</h3>
+            <p>{props.track.artist} | {props.track.album}</p>
           </div>
           <button className="Track-action">{renderAction}</button>
       </div>
