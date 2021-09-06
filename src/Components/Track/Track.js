@@ -5,14 +5,18 @@ function Track(props) {
     const renderAction = () => {
       let buttonSign = <button className="Track-action" onClick={addTrack}>+</button>;
       if(props.isRemoval) {
-        buttonSign = <button className="Track-action">-</button>;
+        buttonSign = <button className="Track-action" onClick={removeTrack}>-</button>;
       }
 
       return buttonSign;
     }
 
     const addTrack = () => {
-      props.onAdd(props.track)
+      props.onAdd(props.track);
+    }
+    
+    const removeTrack = () => {
+      props.onRemove(props.track);
     }
 
     return (
