@@ -1,11 +1,11 @@
 import './Playlist.css'
 import TrackList from '../TrackList/TrackList';
 
-function PlayList() {
+function PlayList(props) {
     return (
         <div className="Playlist">
             <input defaultValue={'New Playlist'} />
-            {/* <TrackList /> */}
+            <TrackList tracks={props.tracks}/>
             <button className="Playlist-save">SAVE TO SPOTIFY</button>
         </div>
     );

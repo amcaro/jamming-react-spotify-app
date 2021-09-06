@@ -12,6 +12,28 @@ function App(props) {
     { name: 'Tiny Dancer', artist: 'Tim McGraw', album: 'Love Story', id: 2},
     { name: 'Tiny Dancer', artist: 'Rockabye Baby!', album: 'Lullaby Renditions of Elton John', id: 3}
   ]);
+  const [playlistName, setPlaylistName] = useState('Relax');
+  const [playlistTracks, setPlaylistTracks] = useState([
+    { name: 'Soothing', artist: 'John', album: 'Soothing sounds', id: 4},
+    { name: 'Water Flow', artist: 'Earth', album: 'Earth sounds', id: 5},
+    { name: 'Fire', artist: 'Volcano', album: 'Fire sounds', id: 6}
+  ]);
+
+  const addTrack = (track) => {
+    let inPlaylist = false;
+    
+    for (const pTrack of playlistTracks) {
+      if(pTrack.id === track.id) {
+        inPlaylist = true;
+        break;
+      }
+    }
+    
+    if(!inPlaylist) {
+      setPlaylistTracks([...playlistTracks, track]);
+    }
+    
+  };
 
   return (
     <div>
@@ -19,8 +41,8 @@ function App(props) {
       <div className="App">
         <SearchBar />
         <div className="App-playlist">
-          <SearchResults searchResults={searchResults} />
-          <PlayList />
+          <SearchResults searchResults={searchResults} onAdd={addTrack} />
+          <PlayList name={playlistName} tracks={playlistTracks} />
         </div>
       </div>
     </div>
