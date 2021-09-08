@@ -39,14 +39,31 @@ function App(props) {
     setPlaylistTracks(playlistTracks.filter(pTrack => pTrack.id !== track.id));
   }
 
+  const updatePlaylistName = (name) => {
+    setPlaylistName(name);
+  }
+
+  const savePlaylist = () => {
+    const trackURIs = playlistTracks.map(track => track.uri);
+  }
+
+  const search = (term) => {
+    console.log(term);
+  }
+
   return (
     <div>
       <h1>Ja<span className="highlight">mmm</span>ing</h1>
       <div className="App">
-        <SearchBar />
+        <SearchBar onSearch={search}/>
         <div className="App-playlist">
           <SearchResults searchResults={searchResults} onAdd={addTrack} />
-          <PlayList name={playlistName} tracks={playlistTracks} onRemove={removeTrack} />
+          <PlayList name={playlistName} 
+                    tracks={playlistTracks} 
+                    onRemove={removeTrack} 
+                    setName={setPlaylistName}
+                    onSave={savePlaylist}
+          />
         </div>
       </div>
     </div>
