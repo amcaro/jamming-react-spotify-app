@@ -2,22 +2,19 @@ import './App.css';
 import SearchBar from '../SearchBar/SearchBar';
 import SearchResults from '../SearchResults/SearchResults';
 import PlayList from '../Playlist/Playlist';
-import {useState} from 'react';
+import {useState, useEffect} from 'react';
+import spotify from '../../util/Spotify';
 
 
 function App(props) {
   
-  const [searchResults, setResults] = useState([
-    { name: 'Tiny Dancer', artist: 'Elton John', album: 'Madman Across The Water', id: 1},
-    { name: 'Tiny Dancer', artist: 'Tim McGraw', album: 'Love Story', id: 2},
-    { name: 'Tiny Dancer', artist: 'Rockabye Baby!', album: 'Lullaby Renditions of Elton John', id: 3}
-  ]);
+  const [searchResults, setResults] = useState([]);
   const [playlistName, setPlaylistName] = useState('Relax');
-  const [playlistTracks, setPlaylistTracks] = useState([
-    { name: 'Soothing', artist: 'John', album: 'Soothing sounds', id: 4},
-    { name: 'Water Flow', artist: 'Earth', album: 'Earth sounds', id: 5},
-    { name: 'Fire', artist: 'Volcano', album: 'Fire sounds', id: 6}
-  ]);
+  const [playlistTracks, setPlaylistTracks] = useState([]);
+
+  useEffect(() => {
+    spotify.getAccessToken();
+  }, []);
 
   const addTrack = (track) => {
     let inPlaylist = false;
@@ -48,7 +45,13 @@ function App(props) {
   }
 
   const search = (term) => {
-    console.log(term);
+    spotify.search(term).then(results => {
+      setResults(results);
+    })
+    .catch(err => {
+      console.log(err);
+    });
+    
   }
 
   return (

@@ -17,9 +17,9 @@ const spotify = {
         const tokMatch = URL.match(/access_token=([^&]*)/);
         
         if(tokMatch && expMatch) {
-            accessToken = tokMatch;
-            expiresIn = expMatch;
-            
+            accessToken = tokMatch[0].replace("access_token=", "");
+            expiresIn = expMatch[0].replace("expires_in=", "");
+
             window.setTimeout(() => accessToken = null, expiresIn * 1000);
             window.history.pushState('Access Token', null, '/');
 
@@ -29,38 +29,37 @@ const spotify = {
         window.location.href = `${baseURL}&client_id=${clientId}&redirect_uri=${redirectURI}&response_type=token`;
     },
 
-    search(term) {
-        const baseSearchUrl = 'https://api.spotify.com/v1/search?type=TRACK';
-        fetch(baseSearchUrl + `&q=${term}`, {
+    async search(term) {
+        const urlTerm = encodeURI(term);
+        const searchUrl = `https://api.spotify.com/v1/search?q=${urlTerm}&type=track`;
+        const tracks = [];
+
+        const response = await fetch(searchUrl, {
             headers: {
                 'Authorization': 'Bearer ' + accessToken
             }
         })
-        .then(response => {
-            if(response.ok)
-                return response.json;
-        })
-        .then(data => {
-            const tracks = [];
+        const data = await response.json();
 
-            data.tracks.forEach(track => {
-                const tObj = {
-                    id: track.id,
-                    name: track.name,
-                    artists: [],
-                    album: {
-                        name: track.album.name
-                    },
-                    uri: track.uri
-                };
+        data.tracks.items.forEach(track => {
+            const tObj = {
+                id: track.id,
+                name: track.name,
+                artists: [],
+                album: {
+                    name: track.album.name
+                },
+                uri: track.uri
+            };
 
-                track.artists.forEach(artist => {
-                    tObj.artists.push({name: artist.name});
-                });
+            track.artists.forEach(artist => {
+                tObj.artists.push({name: artist.name});
             });
-            
-            return tracks;
-        });
+
+            tracks.push(tObj);   
+        })
+
+        return tracks;
     }
 }
 

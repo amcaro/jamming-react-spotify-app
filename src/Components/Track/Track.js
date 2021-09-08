@@ -19,11 +19,13 @@ function Track(props) {
       props.onRemove(props.track);
     }
 
+    const trackArtists = props.track.artists.map(artist => `${artist.name} `);
+
     return (
         <div className="Track">
           <div className="Track-information">
             <h3>{props.track.name}</h3>
-            <p>{props.track.artist} | {props.track.album}</p>
+            <p>{trackArtists} | {props.track.album.name} </p>
           </div>
           {renderAction()}
       </div>
