@@ -6,7 +6,7 @@ let expiresIn;
 export let accessToken;
 
 const spotify = {
-    getAccessToken() {
+    async getAccessToken() {
         
         if(accessToken) { 
             return accessToken;
@@ -21,7 +21,7 @@ const spotify = {
             expiresIn = expMatch[0].replace("expires_in=", "");
 
             window.setTimeout(() => accessToken = null, expiresIn * 1000);
-            window.history.pushState('Access Token', null, '/');
+            window.history.pushState('Access Token', null, '/jamming-react-spotify-app/');
 
             return accessToken;
         }

@@ -13,8 +13,7 @@ function App(props) {
   const [playlistTracks, setPlaylistTracks] = useState([]);
 
   useEffect(() => {
-    spotify.getAccessToken();
-    Notification.requestPermission();
+    spotify.getAccessToken().then(Notification.requestPermission());
   }, []);
 
   const addTrack = (track) => {
