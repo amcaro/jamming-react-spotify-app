@@ -1,6 +1,6 @@
 const baseURL = 'https://accounts.spotify.com/authorize?';
-const clientId = '221c24a4cc8f4d59b13a38940b77ce4e' ;
-const redirectURI = 'http://localhost:3000/';
+const clientId = '221c24a4cc8f4d59b13a38940b77ce4e';
+const redirectURI = 'https://amcaro.github.io/jamming-react-spotify-app/';
 
 let expiresIn;
 export let accessToken;
@@ -63,7 +63,7 @@ const spotify = {
     },
 
     async savePlaylist(listName, trackURIs) {
-        
+
         if ( !listName || !trackURIs.length ) {
             return;
         }
@@ -119,6 +119,7 @@ const spotify = {
 
         if(response.ok) {
             const data = response.json();
+            new Notification(`'${listName}' has been saved to Spotify!`)
             console.log('Songs added to playlist')
         }
         else {

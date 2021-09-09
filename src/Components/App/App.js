@@ -14,6 +14,7 @@ function App(props) {
 
   useEffect(() => {
     spotify.getAccessToken();
+    Notification.requestPermission();
   }, []);
 
   const addTrack = (track) => {
@@ -39,6 +40,7 @@ function App(props) {
   const savePlaylist = () => {
     const trackURIs = playlistTracks.map(track => track.uri);
     spotify.savePlaylist(playlistName, trackURIs);
+    setPlaylistTracks([]);
   }
 
   const search = (term) => {
