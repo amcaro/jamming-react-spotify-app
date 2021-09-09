@@ -19,7 +19,10 @@ function Track(props) {
       props.onRemove(props.track);
     }
 
-    const trackArtists = props.track.artists.map(artist => `${artist.name} `);
+    const trackArtists = props.track.artists.map(artist => `${artist.name}, `);
+    const lastIndx = trackArtists.length - 1;
+
+    trackArtists[lastIndx] = trackArtists[lastIndx].replace(', ' , '');
 
     return (
         <div className="Track">

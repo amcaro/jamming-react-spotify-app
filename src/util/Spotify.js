@@ -3,7 +3,7 @@ const clientId = '221c24a4cc8f4d59b13a38940b77ce4e' ;
 const redirectURI = 'http://localhost:3000/';
 
 let expiresIn;
-let accessToken;
+export let accessToken;
 
 const spotify = {
     getAccessToken() {
@@ -26,7 +26,7 @@ const spotify = {
             return accessToken;
         }
 
-        window.location.href = `${baseURL}&client_id=${clientId}&redirect_uri=${redirectURI}&response_type=token`;
+        window.location.href = `${baseURL}&client_id=${clientId}&scope=playlist-modify-public&redirect_uri=${redirectURI}&response_type=token`;
     },
 
     async search(term) {
@@ -41,7 +41,7 @@ const spotify = {
         })
         const data = await response.json();
 
-        data.tracks.items.forEach(track => {
+        data.tracks.items.forEach(track => { 
             const tObj = {
                 id: track.id,
                 name: track.name,
@@ -60,6 +60,70 @@ const spotify = {
         })
 
         return tracks;
+    },
+
+    async savePlaylist(listName, trackURIs) {
+        
+        if ( !listName || !trackURIs.length ) {
+            return;
+        }
+        
+        //Get user ID
+        const userURL = 'https://api.spotify.com/v1/me'
+        const header = { 'Authorization': 'Bearer ' + accessToken };
+        let userID;
+
+        let response = await fetch(userURL, {headers: header});
+
+        if(response.ok) {
+            const data = await response.json();
+            userID = data.id;
+        }
+        else {
+            console.log('Error fetching userID');
+            return;
+        }
+
+        // Create new Playlist in user account
+        const playlistURL = `https://api.spotify.com/v1/users/${userID}/playlists`;
+        let playlistID;
+
+        response = await fetch(playlistURL, {
+            method: 'POST',
+            headers: header,
+            body: JSON.stringify({name: listName}),
+            json: true
+        });
+
+        if(response.ok) {
+           const data = await response.json();
+           playlistID = data.id;
+        }
+        else {
+            console.log('Error posting Playlist');
+            return;
+        }
+
+        //Add song tracks to created playlist
+        const addtracksURL = `https://api.spotify.com/v1/playlists/${playlistID}/tracks`;
+
+
+        response = await fetch(addtracksURL, {
+            method: 'POST',
+            headers: { 
+                'Authorization': 'Bearer ' + accessToken,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({uris: trackURIs })
+        });
+
+        if(response.ok) {
+            const data = response.json();
+            console.log('Songs added to playlist')
+        }
+        else {
+            console.log('Error adding songs to playlist');
+        }
     }
 }
 
